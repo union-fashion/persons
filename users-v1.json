@@ -1,0 +1,204 @@
+openapi: 3.0.0
+info:
+  title: Users
+  description: This is the API for managing users.
+  contact: {}
+  version: '2.1.0'
+servers:
+- url: http://example.com/users
+  variables: {}
+paths:
+  /register:
+    post:
+      tags:
+      - Account
+      summary: Register
+      description: 'TODO: Add Description'
+      operationId: Register
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+            example:
+              email: max@gmail.com
+              password: '{{url}}'
+        required: true
+      responses:
+        200:
+          description: ''
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Register'
+              example:
+                status: success
+      deprecated: false
+  /login:
+    post:
+      tags:
+      - Account
+      summary: Login
+      description: Authorizes a user.
+      operationId: Login
+      parameters:
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example:
+              email: max@gmail.com
+              password: rD%5dQ!2
+        required: true
+      responses:
+        200:
+          description: ''
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+              example:
+                status: success
+      deprecated: false
+  /update:
+    put:
+      tags:
+      - Account
+      summary: Update
+      description: For updating email or password.
+      operationId: Update
+      parameters:
+      - name: email
+        in: query
+        description: The user's email.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: max@gmail.com
+      - name: Content-Type
+        in: header
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRequest'
+            example:
+              password: aB$8kZ(0
+        required: true
+      responses:
+        200:
+          description: ''
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Update'
+              example:
+                status: success
+      deprecated: false
+components:
+  schemas:
+    RegisterRequest:
+      title: RegisterRequest
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: max@gmail.com
+        password: '{{url}}'
+    Register:
+      title: Register
+      required:
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+      example:
+        status: success
+    LoginRequest:
+      title: LoginRequest
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: max@gmail.com
+        password: rD%5dQ!2
+    Login:
+      title: Login
+      required:
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+      example:
+        status: success
+    UpdateRequest:
+      title: UpdateRequest
+      required:
+      - password
+      type: object
+      properties:
+        password:
+          type: string
+      example:
+        password: aB$8kZ(0
+    Update:
+      title: Update
+      required:
+      - status
+      type: object
+      example:
+        segments:
+        - name: VIP shoppers
+        - name: Sale shoppers
+tags:
+- name: Users
+  description: Requests specific to user accounts.
