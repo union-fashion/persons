@@ -1,204 +1,207 @@
 openapi: 3.0.0
 info:
   title: Users
-  description: This is the API for managing users.
-  contact: {}
-  version: '2.1.0'
+  description: 'This an API for managing users that exist in the Union Fashion users, allowing any desktop, web, mobile, or device application to integrate with users made via our platform.'
+  version: '1.0'
 servers:
-- url: http://example.com/users
-  variables: {}
+- url: '{{baseUrl}}'
 paths:
-  /register:
+  /users:
     post:
+      summary: Add User
+      description: Creates a new user.
+      operationId: addUser
       tags:
-      - Account
-      summary: Register
-      description: 'TODO: Add Description'
-      operationId: Register
-      parameters:
-      - name: Content-Type
-        in: header
-        description: ''
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          example: application/json
+        - Users
       requestBody:
-        description: ''
+        description: 'A user schema.'
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterRequest'
+              $ref: '#/components/schemas/User'
             example:
-              email: max@gmail.com
-              password: '{{url}}'
-        required: true
+              category: Jeans
+              brand: Union
+              color: black
+              gender: m
+              unitPrice: 49.99
+              unitSalePrice: 29.99
+      security:
+      - api_key: []
       responses:
-        200:
-          description: ''
-          headers: {}
+        201:
+          description: 'Successful creation of user.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Register'
+                $ref: '#/components/schemas/User'
               example:
                 status: success
       deprecated: false
-  /login:
-    post:
+    get:
+      summary: Get Users
+      description: Pulls a list of all user
+      operationId: getUsers
       tags:
-      - Account
-      summary: Login
-      description: Authorizes a user.
-      operationId: Login
+        - Users
       parameters:
-      - name: Content-Type
-        in: header
-        description: ''
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          example: application/json
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginRequest'
-            example:
-              email: max@gmail.com
-              password: rD%5dQ!2
-        required: true
-      responses:
-        200:
-          description: ''
-          headers: {}
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Login'
-              example:
-                status: success
-      deprecated: false
-  /update:
-    put:
-      tags:
-      - Account
-      summary: Update
-      description: For updating email or password.
-      operationId: Update
-      parameters:
-      - name: email
+      - name: query
         in: query
-        description: The user's email.
+        description: 'A query to search for users by.'
         required: true
-        style: form
-        explode: true
         schema:
           type: string
-          example: max@gmail.com
-      - name: Content-Type
-        in: header
-        description: ''
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-          example: application/json
-      requestBody:
-        description: ''
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateRequest'
-            example:
-              password: aB$8kZ(0
-        required: true
+          example: 'shirts'
+      security:
+      - api_key: []
       responses:
         200:
-          description: ''
-          headers: {}
+          description: 'List of users.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Update'
+                $ref: '#/components/schemas/Users'
               example:
                 status: success
+      deprecated: false
+  '/users/{userId}':
+    get:
+      summary: Get User
+      description: Retrieves a single user.
+      operationId: getUser
+      tags:
+      - Users
+      parameters:
+        - name: userId
+          in: path
+          description: The user ID to retrieve.
+          required: true
+          schema:
+            type: string
+            example: user-one
+      responses:
+        200:
+          description: 'Single user.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              example:
+                status: success
+      deprecated: false
+      security:
+      - api_key: []
+    put:
+      summary: Update
+      description: Supports either full or partial updates.
+      operationId: updateUser
+      tags:
+      - Users
+      parameters:
+        - name: userId
+          in: path
+          description: The user ID to retrieve.
+          required: true
+          schema:
+            type: string
+            example: user-one
+      security:
+      - api_key: []
+      requestBody:
+        description: 'A user object.'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+            example:
+              unitSalePrice: 29.99
+        required: true
+      responses:
+        204:
+          description: 'Successfully updated.'
+      deprecated: false
+    delete:
+      tags:
+      - Users
+      summary: Delete
+      description: 'Delete an individual user.'
+      operationId: deleteUser
+      parameters:
+        - name: userId
+          in: path
+          description: The user ID to retrieve.
+          required: true
+          schema:
+            type: string
+            example: user-one
+      security:
+      - api_key: []
+      responses:
+        204:
+          description: 'User deleted.'
       deprecated: false
 components:
+  securitySchemes:
+    api_key:
+      type: "apiKey"
+      name: "x-api-key"
+      in: "header"
   schemas:
-    RegisterRequest:
-      title: RegisterRequest
+    Users:
+      type: array
+      items:
+        $ref: "#/components/schemas/User"
+    User:
+      title: User
       required:
-      - email
-      - password
+      - identifier
+      - name
       type: object
       properties:
-        email:
+        identifier:
           type: string
-        password:
+        name:
           type: string
-      example:
-        email: max@gmail.com
-        password: '{{url}}'
-    Register:
-      title: Register
-      required:
-      - status
-      type: object
-      properties:
-        status:
+        description:
           type: string
-      example:
-        status: success
-    LoginRequest:
-      title: LoginRequest
-      required:
-      - email
-      - password
-      type: object
-      properties:
-        email:
+        image:
           type: string
-        password:
+        url:
           type: string
-      example:
-        email: max@gmail.com
-        password: rD%5dQ!2
-    Login:
-      title: Login
-      required:
-      - status
-      type: object
-      properties:
-        status:
+        brand:
+          type: string
+        category:
+          type: string
+        color:
+          type: string
+        logo:
+          type: string
+        manufacturer:
+          type: string
+        material:
+          type: string
+        model:
+          type: string
+        releaseDate:
+          type: string
+        sku:
+          type: string
+        width:
+          type: string
+        weight:
+          type: string
+        depth:
+          type: string
+        height:
           type: string
       example:
-        status: success
-    UpdateRequest:
-      title: UpdateRequest
-      required:
-      - password
-      type: object
-      properties:
-        password:
-          type: string
-      example:
-        password: aB$8kZ(0
-    Update:
-      title: Update
-      required:
-      - status
-      type: object
-      example:
-        segments:
-        - name: VIP shoppers
-        - name: Sale shoppers
+        id: XYZ-JEAN-123
+        category: Jeans
+        brand: Union
+        color: black
+        gender: m
+        unitPrice: 49.99
+        unitSalePrice: 29.99
 tags:
 - name: Users
-  description: Requests specific to user accounts.
+  description: 'A user object.'
