@@ -1,0 +1,207 @@
+openapi: 3.0.0
+info:
+  title: Persons
+  description: 'This an API for managing persons that exist in the Union Fashion persons, allowing any desktop, web, mobile, or device application to integrate with persons made via our platform.'
+  version: '1.0'
+servers:
+- url: '{{baseUrl}}'
+paths:
+  /persons:
+    post:
+      summary: Add Person
+      description: Creates a new person.
+      operationId: addPerson
+      tags:
+        - Persons
+      requestBody:
+        description: 'A person schema.'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+            example:
+              category: Jeans
+              brand: Union
+              color: black
+              gender: m
+              unitPrice: 49.99
+              unitSalePrice: 29.99
+      security:
+      - api_key: []
+      responses:
+        201:
+          description: 'Successful creation of person.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+              example:
+                status: success
+      deprecated: false
+    get:
+      summary: Get Persons
+      description: Pulls a list of all person
+      operationId: getPersons
+      tags:
+        - Persons
+      parameters:
+      - name: query
+        in: query
+        description: 'A query to search for persons by.'
+        required: true
+        schema:
+          type: string
+          example: 'shirts'
+      security:
+      - api_key: []
+      responses:
+        200:
+          description: 'List of persons.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Persons'
+              example:
+                status: success
+      deprecated: false
+  '/persons/{personId}':
+    get:
+      summary: Get Person
+      description: Retrieves a single person.
+      operationId: getPerson
+      tags:
+      - Persons
+      parameters:
+        - name: personId
+          in: path
+          description: The person ID to retrieve.
+          required: true
+          schema:
+            type: string
+            example: person-one
+      responses:
+        200:
+          description: 'Single person.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+              example:
+                status: success
+      deprecated: false
+      security:
+      - api_key: []
+    put:
+      summary: Update
+      description: Supports either full or partial updates.
+      operationId: updatePerson
+      tags:
+      - Persons
+      parameters:
+        - name: personId
+          in: path
+          description: The person ID to retrieve.
+          required: true
+          schema:
+            type: string
+            example: person-one
+      security:
+      - api_key: []
+      requestBody:
+        description: 'A person object.'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+            example:
+              unitSalePrice: 29.99
+        required: true
+      responses:
+        204:
+          description: 'Successfully updated.'
+      deprecated: false
+    delete:
+      tags:
+      - Persons
+      summary: Delete
+      description: 'Delete an individual person.'
+      operationId: deletePerson
+      parameters:
+        - name: personId
+          in: path
+          description: The person ID to retrieve.
+          required: true
+          schema:
+            type: string
+            example: person-one
+      security:
+      - api_key: []
+      responses:
+        204:
+          description: 'Person deleted.'
+      deprecated: false
+components:
+  securitySchemes:
+    api_key:
+      type: "apiKey"
+      name: "x-api-key"
+      in: "header"
+  schemas:
+    Persons:
+      type: array
+      items:
+        $ref: "#/components/schemas/Person"
+    Person:
+      title: Person
+      required:
+      - identifier
+      - name
+      type: object
+      properties:
+        identifier:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        image:
+          type: string
+        url:
+          type: string
+        brand:
+          type: string
+        category:
+          type: string
+        color:
+          type: string
+        logo:
+          type: string
+        manufacturer:
+          type: string
+        material:
+          type: string
+        model:
+          type: string
+        releaseDate:
+          type: string
+        sku:
+          type: string
+        width:
+          type: string
+        weight:
+          type: string
+        depth:
+          type: string
+        height:
+          type: string
+      example:
+        id: XYZ-JEAN-123
+        category: Jeans
+        brand: Union
+        color: black
+        gender: m
+        unitPrice: 49.99
+        unitSalePrice: 29.99
+tags:
+- name: Persons
+  description: 'A person object.'
