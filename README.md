@@ -1,4 +1,4 @@
-# Union Fashion User API
+# Union Fashion Persons API
 This an API for managing persons that exist in the Union Fashion system, allowing any desktop, web, mobile, or device application to integrate with person accounts.
 
 Everything you will need to know about the person API should be available, providing links to al the areas of development for the API and it's supporting resources.
