@@ -160,48 +160,29 @@ components:
       properties:
         identifier:
           type: string
-        name:
+        firstName:
           type: string
-        description:
+        lastName:
+          type: string          
+        bio:
           type: string
         image:
           type: string
         url:
           type: string
-        brand:
+        title:
           type: string
-        category:
-          type: string
-        color:
-          type: string
-        logo:
-          type: string
-        manufacturer:
-          type: string
-        material:
-          type: string
-        model:
-          type: string
-        releaseDate:
-          type: string
-        sku:
-          type: string
-        width:
-          type: string
-        weight:
-          type: string
-        depth:
-          type: string
-        height:
-          type: string
+        dateOfBirth:
+          type: string          
       example:
-        id: XYZ-JEAN-123
-        category: Jeans
-        brand: Union
-        color: black
-        gender: m
-        unitPrice: 49.99
-        unitSalePrice: 29.99
+        identifier: albert-einstein
+        firstName: Albert
+        lastName: Einstein
+        bio: black
+        image: m
+        url: 49.99
+        title: 29.99
+        dateOfBirth: 29.99
 tags:
 - name: Persons
   description: 'A person object.'
